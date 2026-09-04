@@ -1,0 +1,21 @@
+<LoginScreen>
+
+    MDBoxLayout:
+        orientation: "vertical"
+        padding: 20
+        spacing: 20
+
+        MDLabel:
+            text: "Login"
+            halign: "center"
+            font_style: "Headline"
+
+        MDButton:
+            pos_hint: {"center_x": .5}
+            on_release:
+                root.goto_dashboard()
+            MDButtonText:
+                text: "Go Dashboard"
+
+            
+                
