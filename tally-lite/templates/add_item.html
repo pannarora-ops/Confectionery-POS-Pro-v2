@@ -3,26 +3,52 @@
 {% block content %}
 <div class="card">
     <h2>➕ Add New Item</h2>
-    <form method="POST">
-        <div class="form-group">
-            <label for="name">Item Name *</label>
-            <input type="text" id="name" name="name" required placeholder="Enter item name">
-        </div>
-        <div class="form-group">
-            <label for="hsn_code">HSN/SAC Code</label>
-            <input type="text" id="hsn_code" name="hsn_code" placeholder="e.g., 8471">
-        </div>
-        <div class="form-group">
-            <label for="rate">Rate (₹)</label>
-            <input type="number" id="rate" name="rate" step="0.01" value="0" placeholder="0.00">
-        </div>
-        <div class="form-group">
-            <label for="gst_rate">GST Rate (%)</label>
-            <input type="number" id="gst_rate" name="gst_rate" step="0.01" value="0" placeholder="0">
-        </div>
-        <div class="form-group">
-            <label for="stock">Opening Stock</label>
-            <input type="number" id="stock" name="stock" value="0" placeholder="0">
+    <form method="POST" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="name">Item Name *</label>
+                    <input type="text" id="name" name="name" required placeholder="Enter item name">
+                </div>
+                <div class="form-group">
+                    <label for="hsn_code">HSN/SAC Code</label>
+                    <input type="text" id="hsn_code" name="hsn_code" placeholder="e.g., 8471">
+                </div>
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <input type="text" id="category" name="category" placeholder="e.g., Electronics, Clothing">
+                </div>
+                <div class="form-group">
+                    <label for="rate">Rate (₹)</label>
+                    <input type="number" id="rate" name="rate" step="0.01" value="0" placeholder="0.00">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="gst_rate">GST Rate (%)</label>
+                    <input type="number" id="gst_rate" name="gst_rate" step="0.01" value="0" placeholder="0">
+                </div>
+                <div class="form-group">
+                    <label for="stock">Opening Stock</label>
+                    <input type="number" id="stock" name="stock" value="0" placeholder="0">
+                </div>
+                <div class="form-group">
+                    <label for="description">Description (for Online Store)</label>
+                    <textarea id="description" name="description" rows="3" placeholder="Product description"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="image">Product Image</label>
+                    <input type="file" id="image" name="image" accept="image/*">
+                </div>
+                <div class="form-group">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="is_featured" name="is_featured">
+                        <label class="form-check-label" for="is_featured">
+                            Show as Featured in Online Store
+                        </label>
+                    </div>
+                </div>
+            </div>
         </div>
         <button type="submit" class="btn btn-success">Save Item</button>
         <a href="/items" class="btn" style="background: #6c757d;">Cancel</a>

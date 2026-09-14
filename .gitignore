@@ -1,42 +1,25 @@
 ```
+# Database
+tally-lite/instance/tally.db
+
 # Python
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
 .Python
-env/
 venv/
+env/
+ENV/
 .venv/
 .env
 .env.local
 .env.*
-
-# Build artifacts
-build/
-dist/
-*.egg-info/
-
-# Logs
-*.log
-
-# Editors
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Coverage
-.coverage
-htmlcov/
-coverage/
-
-# Dependencies
-pip-wheel-metadata/
-wheels/
-*.whl
+.env~*
+.env.local~
+*.env
+*.env.local
+*.env.*
+*.env~
+*.env.local~
 ```
