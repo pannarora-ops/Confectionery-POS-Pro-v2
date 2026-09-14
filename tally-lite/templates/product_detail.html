@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ item.name }} - Tally Lite Store{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('online_store') }}">Store</a></li>
+            <li class="breadcrumb-item active">{{ item.name }}</li>
+        </ol>
+    </nav>
+
+    <div class="row">
+        <div class="col-md-6">
+            {% if item.image %}
+            <img src="{{ url_for('static', filename='products/' + item.image) }}" class="img-fluid rounded" alt="{{ item.name }}">
+            {% else %}
+            <div class="bg-secondary d-flex align-items-center justify-content-center rounded" style="height: 400px;">
+                <span class="text-white fs-3">No Image Available</span>
+            </div>
+            {% endif %}
+        </div>
+        <div class="col-md-6">
+            <h1>{{ item.name }}</h1>
+            <p class="text-muted">Category: {{ item.category or 'General' }}</p>
+            <p class="text-muted">HSN Code: {{ item.hsn_code or 'N/A' }}</p>
+            <hr>
+            <h2 class="text-primary">₹{{ "%.2f"|format(item.rate) }} 
+                {% if item.gst_rate > 0 %}
+                <small class="text-muted">+ GST {{ item.gst_rate }}%</small>
+                {% endif %}
+            </h2>
+            <p class="{% if item.stock > 0 %}text-success{% else %}text-danger{% endif %}">
+                {% if item.stock > 0 %}
+                ✓ In Stock ({{ item.stock }} available)
+                {% else %}
+                ✗ Out of Stock
+                {% endif %}
+            </p>
+            
+            {% if item.description %}
+            <div class="mt-4">
+                <h5>Product Description</h5>
+                <p>{{ item.description }}</p>
+            </div>
+            {% endif %}
+
+            {% if item.stock > 0 %}
+            <div class="mt-4">
+                <form action="{{ url_for('add_to_cart', item_id=item.id) }}" method="POST">
+                    <div class="mb-3">
+                        <label for="quantity" class="form-label">Quantity</label>
+                        <input type="number" class="form-control" id="quantity" name="quantity" value="1" min="1" max="{{ item.stock }}" style="width: 100px;">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg">Add to Cart</button>
+                    <a href="{{ url_for('online_store') }}" class="btn btn-outline-secondary btn-lg">Continue Shopping</a>
+                </form>
+            </div>
+            {% else %}
+            <div class="alert alert-warning mt-4">This product is currently out of stock.</div>
+            {% endif %}
+        </div>
+    </div>
+
+    {% if related_items %}
+    <div class="mt-5">
+        <h3>Related Products</h3>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+            {% for related in related_items %}
+            <div class="col">
+                <div class="card h-100">
+                    {% if related.image %}
+                    <img src="{{ url_for('static', filename='products/' + related.image) }}" class="card-img-top" alt="{{ related.name }}" style="height: 150px; object-fit: cover;">
+                    {% else %}
+                    <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center" style="height: 150px;">
+                        <span class="text-white">No Image</span>
+                    </div>
+                    {% endif %}
+                    <div class="card-body">
+                        <h6 class="card-title">{{ related.name }}</h6>
+                        <p class="card-text">₹{{ "%.2f"|format(related.rate) }}</p>
+                        <a href="{{ url_for('product_detail', item_id=related.id) }}" class="btn btn-sm btn-outline-primary">View</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

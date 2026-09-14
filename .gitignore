@@ -1,37 +1,25 @@
+```
+# Database
+tally-lite/instance/tally.db
+
 # Python
 __pycache__/
-*.py[cod]
+*.pyc
 *.pyo
 *.pyd
-*.egg-info/
-
-# Virtual Environment
-.venv/
+.Python
 venv/
-
-# VS Code
-.vscode/
-
-# PyCharm
-.idea/
-
-# OS
-Thumbs.db
-.DS_Store
-
-# Build
-build/
-dist/
-
-# Kivy
-*.log
-
-# Database
-*.db
-*.sqlite3
-
-# Environment
+env/
+ENV/
+.venv/
 .env
-
-# Temporary
-*.tmp
+.env.local
+.env.*
+.env~*
+.env.local~
+*.env
+*.env.local
+*.env.*
+*.env~
+*.env.local~
+```

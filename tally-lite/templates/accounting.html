@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h2>📒 Accounting - Journal Entries</h2>
+        <a href="/journal/add" class="btn">➕ Add Journal Entry</a>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Voucher #</th>
+                <th>Date</th>
+                <th>Description</th>
+                <th>Total Debit</th>
+                <th>Total Credit</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for journal in journals %}
+            <tr>
+                <td>{{ journal.voucher_number }}</td>
+                <td>{{ journal.date.strftime('%d-%m-%Y') }}</td>
+                <td>{{ journal.description or '-' }}</td>
+                <td>₹{{ "%.2f"|format(journal.entries|sum(attribute='debit')) }}</td>
+                <td>₹{{ "%.2f"|format(journal.entries|sum(attribute='credit')) }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="6" style="text-align: center;">No journal entries found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

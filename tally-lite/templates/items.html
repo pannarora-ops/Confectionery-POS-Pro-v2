@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h2>📦 Items Inventory</h2>
+        <a href="/item/add" class="btn">➕ Add New Item</a>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>HSN Code</th>
+                <th>Rate</th>
+                <th>GST %</th>
+                <th>Stock</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td>{{ item.id }}</td>
+                <td>{{ item.name }}</td>
+                <td>{{ item.hsn_code or '-' }}</td>
+                <td>₹{{ "%.2f"|format(item.rate) }}</td>
+                <td>{{ item.gst_rate }}%</td>
+                <td>{{ item.stock }}</td>
+                <td>₹{{ "%.2f"|format(item.rate * item.stock) }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="8" style="text-align: center;">No items found. Add your first item!</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+
+{% block title %}Order Confirmation - Tally Lite Store{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-success text-white text-center">
+                    <h2 class="mb-0">✓ Order Placed Successfully!</h2>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-info text-center">
+                        <h4>Your Order Number: <strong>{{ order.order_number }}</strong></h4>
+                        <p>Please save this order number for future reference.</p>
+                    </div>
+                    
+                    <h5>Order Details</h5>
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>Order Date:</th>
+                            <td>{{ order.order_date.strftime('%d/%m/%Y %I:%M %p') }}</td>
+                        </tr>
+                        <tr>
+                            <th>Customer Name:</th>
+                            <td>{{ order.customer_name }}</td>
+                        </tr>
+                        <tr>
+                            <th>Email:</th>
+                            <td>{{ order.customer_email }}</td>
+                        </tr>
+                        {% if order.customer_phone %}
+                        <tr>
+                            <th>Phone:</th>
+                            <td>{{ order.customer_phone }}</td>
+                        </tr>
+                        {% endif %}
+                        <tr>
+                            <th>Shipping Address:</th>
+                            <td>
+                                {{ order.shipping_address }}<br>
+                                {{ order.city }}, {{ order.state }} - {{ order.pincode }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Payment Method:</th>
+                            <td>{{ order.payment_method }}</td>
+                        </tr>
+                        <tr>
+                            <th>Payment Status:</th>
+                            <td>
+                                <span class="badge {% if order.payment_status == 'Paid' %}bg-success{% else %}bg-warning{% endif %}">
+                                    {{ order.payment_status }}
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Order Status:</th>
+                            <td>
+                                <span class="badge bg-primary">{{ order.status }}</span>
+                            </td>
+                        </tr>
+                    </table>
+                    
+                    <h5>Order Items</h5>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Quantity</th>
+                                <th>Rate</th>
+                                <th>Tax</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in order.items %}
+                            <tr>
+                                <td>{{ item.item.name }}</td>
+                                <td>{{ item.quantity }}</td>
+                                <td>₹{{ "%.2f"|format(item.rate) }}</td>
+                                <td>₹{{ "%.2f"|format(item.tax_amount) }} ({{ item.tax_rate }}%)</td>
+                                <td>₹{{ "%.2f"|format(item.total) }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th colspan="4">Subtotal:</th>
+                                <td>₹{{ "%.2f"|format(order.total_amount) }}</td>
+                            </tr>
+                            <tr>
+                                <th colspan="4">Tax:</th>
+                                <td>₹{{ "%.2f"|format(order.tax_amount) }}</td>
+                            </tr>
+                            <tr>
+                                <th colspan="4">Grand Total:</th>
+                                <td><strong>₹{{ "%.2f"|format(order.grand_total) }}</strong></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    
+                    {% if order.notes %}
+                    <div class="mt-3">
+                        <strong>Order Notes:</strong>
+                        <p>{{ order.notes }}</p>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="text-center mt-4">
+                        <a href="{{ url_for('online_store') }}" class="btn btn-primary btn-lg">Continue Shopping</a>
+                        <a href="{{ url_for('index') }}" class="btn btn-outline-secondary btn-lg">Go to Dashboard</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

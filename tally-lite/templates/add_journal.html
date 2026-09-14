@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card">
+    <h2>📒 Add Journal Entry</h2>
+    <form method="POST" id="journalForm">
+        <div class="grid" style="grid-template-columns: 1fr 1fr;">
+            <div class="form-group">
+                <label for="voucher_number">Voucher Number *</label>
+                <input type="text" id="voucher_number" name="voucher_number" required placeholder="JV-001">
+            </div>
+            <div class="form-group">
+                <label for="date">Date *</label>
+                <input type="date" id="date" name="date" required value="{{ today }}">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="description">Description/Narration</label>
+            <textarea id="description" name="description" rows="2" placeholder="Enter narration"></textarea>
+        </div>
+
+        <h3 style="margin: 1.5rem 0 1rem;">Account Entries (Double Entry)</h3>
+        <table id="entriesTable">
+            <thead>
+                <tr>
+                    <th style="width: 40%;">Account Name</th>
+                    <th style="width: 30%;">Debit (₹)</th>
+                    <th style="width: 30%;">Credit (₹)</th>
+                </tr>
+            </thead>
+            <tbody id="entriesBody">
+                <tr class="entry-row">
+                    <td><input type="text" name="account_name[]" placeholder="Account Head" required></td>
+                    <td><input type="number" name="debit[]" step="0.01" value="0" placeholder="0.00"></td>
+                    <td><input type="number" name="credit[]" step="0.01" value="0" placeholder="0.00"></td>
+                </tr>
+                <tr class="entry-row">
+                    <td><input type="text" name="account_name[]" placeholder="Account Head" required></td>
+                    <td><input type="number" name="debit[]" step="0.01" value="0" placeholder="0.00"></td>
+                    <td><input type="number" name="credit[]" step="0.01" value="0" placeholder="0.00"></td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <button type="button" class="btn" onclick="addEntryRow()" style="margin-top: 1rem; background: #28a745;">+ Add Entry Row</button>
+
+        <div style="margin-top: 2rem; padding-top: 1rem; border-top: 2px solid #ddd;">
+            <button type="submit" class="btn btn-success">💾 Save Journal Entry</button>
+            <a href="/accounting" class="btn" style="background: #6c757d;">Cancel</a>
+        </div>
+    </form>
+</div>
+
+<script>
+function addEntryRow() {
+    const tbody = document.getElementById('entriesBody');
+    const row = document.createElement('tr');
+    row.className = 'entry-row';
+    row.innerHTML = `
+        <td><input type="text" name="account_name[]" placeholder="Account Head" required></td>
+        <td><input type="number" name="debit[]" step="0.01" value="0" placeholder="0.00"></td>
+        <td><input type="number" name="credit[]" step="0.01" value="0" placeholder="0.00"></td>
+    `;
+    tbody.appendChild(row);
+}
+
+// Set today's date
+document.getElementById('date').value = new Date().toISOString().split('T')[0];
+</script>
+{% endblock %}

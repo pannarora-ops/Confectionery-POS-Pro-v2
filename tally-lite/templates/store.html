@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block title %}Online Store - Tally Lite{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Hero Section -->
+    <div class="p-5 mb-4 bg-light rounded-3">
+        <div class="container-fluid py-5">
+            <h1 class="display-5 fw-bold">Welcome to Our Online Store</h1>
+            <p class="col-md-8 fs-4">Browse our wide range of products and order online with ease.</p>
+            <a href="#products" class="btn btn-primary btn-lg">Shop Now</a>
+        </div>
+    </div>
+
+    <!-- Categories -->
+    {% if categories %}
+    <div class="mb-4">
+        <h3>Categories</h3>
+        <div class="d-flex gap-2 flex-wrap">
+            {% for cat in categories %}
+            <span class="badge bg-secondary">{{ cat[0] }}</span>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Featured Products -->
+    {% if featured_items %}
+    <div class="mb-5">
+        <h3 class="mb-3">Featured Products</h3>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+            {% for item in featured_items %}
+            <div class="col">
+                <div class="card h-100">
+                    {% if item.image %}
+                    <img src="{{ url_for('static', filename='products/' + item.image) }}" class="card-img-top" alt="{{ item.name }}" style="height: 200px; object-fit: cover;">
+                    {% else %}
+                    <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center" style="height: 200px;">
+                        <span class="text-white">No Image</span>
+                    </div>
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item.name }}</h5>
+                        <p class="card-text text-muted">{{ item.category or 'General' }}</p>
+                        <p class="card-text">₹{{ "%.2f"|format(item.rate) }} {% if item.gst_rate > 0 %}+ GST {{ item.gst_rate }}%{% endif %}</p>
+                        <p class="card-text"><small class="text-success">In Stock: {{ item.stock }}</small></p>
+                    </div>
+                    <div class="card-footer bg-white border-top-0">
+                        <a href="{{ url_for('product_detail', item_id=item.id) }}" class="btn btn-outline-primary">View Details</a>
+                        <form action="{{ url_for('add_to_cart', item_id=item.id) }}" method="POST" class="d-inline">
+                            <input type="hidden" name="quantity" value="1">
+                            <button type="submit" class="btn btn-primary">Add to Cart</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- All Products -->
+    <div id="products" class="mb-5">
+        <h3 class="mb-3">All Products</h3>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+            {% for item in all_products %}
+            <div class="col">
+                <div class="card h-100">
+                    {% if item.image %}
+                    <img src="{{ url_for('static', filename='products/' + item.image) }}" class="card-img-top" alt="{{ item.name }}" style="height: 200px; object-fit: cover;">
+                    {% else %}
+                    <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center" style="height: 200px;">
+                        <span class="text-white">No Image</span>
+                    </div>
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item.name }}</h5>
+                        <p class="card-text text-muted">{{ item.category or 'General' }}</p>
+                        <p class="card-text">₹{{ "%.2f"|format(item.rate) }} {% if item.gst_rate > 0 %}+ GST {{ item.gst_rate }}%{% endif %}</p>
+                        <p class="card-text"><small class="text-success">In Stock: {{ item.stock }}</small></p>
+                    </div>
+                    <div class="card-footer bg-white border-top-0">
+                        <a href="{{ url_for('product_detail', item_id=item.id) }}" class="btn btn-outline-primary">View Details</a>
+                        <form action="{{ url_for('add_to_cart', item_id=item.id) }}" method="POST" class="d-inline">
+                            <input type="hidden" name="quantity" value="1">
+                            <button type="submit" class="btn btn-primary">Add to Cart</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
