@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card">
+    <h2>➕ Add New Party</h2>
+    <form method="POST">
+        <div class="form-group">
+            <label for="name">Party Name *</label>
+            <input type="text" id="name" name="name" required placeholder="Enter party name">
+        </div>
+        <div class="form-group">
+            <label for="type">Party Type *</label>
+            <select id="type" name="type" required>
+                <option value="Customer">Customer</option>
+                <option value="Supplier">Supplier</option>
+                <option value="Both">Both</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="text" id="phone" name="phone" placeholder="+91 XXXXXXXXXX">
+        </div>
+        <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" placeholder="party@example.com">
+        </div>
+        <div class="form-group">
+            <label for="address">Address</label>
+            <textarea id="address" name="address" rows="3" placeholder="Enter full address"></textarea>
+        </div>
+        <button type="submit" class="btn btn-success">Save Party</button>
+        <a href="/parties" class="btn" style="background: #6c757d;">Cancel</a>
+    </form>
+</div>
+{% endblock %}

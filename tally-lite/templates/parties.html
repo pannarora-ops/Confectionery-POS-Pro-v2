@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h2>👥 Parties (Customers/Suppliers)</h2>
+        <a href="/party/add" class="btn">➕ Add New Party</a>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Balance (₹)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for party in parties %}
+            <tr>
+                <td>{{ party.id }}</td>
+                <td>{{ party.name }}</td>
+                <td>{{ party.type }}</td>
+                <td>{{ party.phone or '-' }}</td>
+                <td>{{ party.email or '-' }}</td>
+                <td style="color: {{ 'green' if party.balance <= 0 else 'red' }};">
+                    ₹{{ "%.2f"|format(party.balance) }}
+                    {% if party.balance > 0 %}(Receivable){% elif party.balance < 0 %}(Payable){% endif %}
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="7" style="text-align: center;">No parties found. Add your first party!</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

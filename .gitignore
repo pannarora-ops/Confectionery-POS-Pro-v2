@@ -1,37 +1,42 @@
+```
 # Python
 __pycache__/
-*.py[cod]
+*.pyc
 *.pyo
 *.pyd
-*.egg-info/
-
-# Virtual Environment
-.venv/
+.Python
+env/
 venv/
+.venv/
+.env
+.env.local
+.env.*
 
-# VS Code
-.vscode/
-
-# PyCharm
-.idea/
-
-# OS
-Thumbs.db
-.DS_Store
-
-# Build
+# Build artifacts
 build/
 dist/
+*.egg-info/
 
-# Kivy
+# Logs
 *.log
 
-# Database
-*.db
-*.sqlite3
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
 
-# Environment
-.env
+# OS
+.DS_Store
+Thumbs.db
 
-# Temporary
-*.tmp
+# Coverage
+.coverage
+htmlcov/
+coverage/
+
+# Dependencies
+pip-wheel-metadata/
+wheels/
+*.whl
+```

@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h2>📄 Invoices</h2>
+        <a href="/invoice/create" class="btn btn-success">➕ Create Invoice</a>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Invoice #</th>
+                <th>Date</th>
+                <th>Party</th>
+                <th>Type</th>
+                <th>Total Amount</th>
+                <th>Tax</th>
+                <th>Grand Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for invoice in invoices %}
+            <tr>
+                <td>{{ invoice.invoice_number }}</td>
+                <td>{{ invoice.date.strftime('%d-%m-%Y') }}</td>
+                <td>{{ invoice.party.name }}</td>
+                <td>
+                    <span style="padding: 0.25rem 0.5rem; border-radius: 4px; background: {{ '#e3fcef' if invoice.type == 'Sales' else '#fff0e6' }}; color: {{ '#006400' if invoice.type == 'Sales' else '#cc5500' }};">
+                        {{ invoice.type }}
+                    </span>
+                </td>
+                <td>₹{{ "%.2f"|format(invoice.total_amount) }}</td>
+                <td>₹{{ "%.2f"|format(invoice.tax_amount) }}</td>
+                <td><strong>₹{{ "%.2f"|format(invoice.grand_total) }}</strong></td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="8" style="text-align: center;">No invoices found. Create your first invoice!</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

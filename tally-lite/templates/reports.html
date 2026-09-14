@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 style="margin-bottom: 1.5rem;">📊 Business Reports</h2>
+
+<div class="grid">
+    <div class="stat-card" style="background: linear-gradient(135deg, #28a745, #20c997);">
+        <h3>₹{{ "%.2f"|format(total_sales) }}</h3>
+        <p>Total Sales</p>
+    </div>
+    <div class="stat-card" style="background: linear-gradient(135deg, #fd7e14, #ffc107);">
+        <h3>₹{{ "%.2f"|format(total_purchases) }}</h3>
+        <p>Total Purchases</p>
+    </div>
+    <div class="stat-card" style="background: linear-gradient(135deg, #dc3545, #e83e8c);">
+        <h3>₹{{ "%.2f"|format(total_sales - total_purchases) }}</h3>
+        <p>Gross Profit/Loss</p>
+    </div>
+</div>
+
+<div class="card" style="margin-top: 1.5rem;">
+    <h2>📦 Stock Summary</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Item Name</th>
+                <th>HSN Code</th>
+                <th>Stock Qty</th>
+                <th>Rate</th>
+                <th>Stock Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td>{{ item.name }}</td>
+                <td>{{ item.hsn_code or '-' }}</td>
+                <td>{{ item.stock }}</td>
+                <td>₹{{ "%.2f"|format(item.rate) }}</td>
+                <td><strong>₹{{ "%.2f"|format(item.rate * item.stock) }}</strong></td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="5" style="text-align: center;">No items in inventory.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr style="background: #f8f9fa; font-weight: bold;">
+                <td colspan="4">Total Inventory Value</td>
+                <td>₹{{ "%.2f"|format(items|sum(attribute='rate')|float * items|sum(attribute='stock')|float) }}</td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+<div class="card" style="margin-top: 1.5rem;">
+    <h2>👥 Party Balance Summary</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Party Name</th>
+                <th>Type</th>
+                <th>Balance (₹)</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for party in parties %}
+            <tr>
+                <td>{{ party.name }}</td>
+                <td>{{ party.type }}</td>
+                <td style="color: {{ 'green' if party.balance <= 0 else 'red' }};">
+                    ₹{{ "%.2f"|format(party.balance) }}
+                </td>
+                <td>
+                    {% if party.balance > 0 %}
+                        <span style="padding: 0.25rem 0.5rem; background: #fff0e6; color: #cc5500; border-radius: 4px;">Receivable</span>
+                    {% elif party.balance < 0 %}
+                        <span style="padding: 0.25rem 0.5rem; background: #e3fcef; color: #006400; border-radius: 4px;">Payable</span>
+                    {% else %}
+                        <span style="padding: 0.25rem 0.5rem; background: #e9ecef; color: #495057; border-radius: 4px;">Clear</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="4" style="text-align: center;">No parties found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<button onclick="window.print()" class="btn no-print" style="margin-top: 1rem;">🖨️ Print Report</button>
+{% endblock %}

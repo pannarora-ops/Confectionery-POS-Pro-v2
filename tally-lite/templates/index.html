@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card">
+    <h2>Welcome to Tally Lite</h2>
+    <p>A simple billing, inventory, and accounting software inspired by Tally.</p>
+</div>
+
+<div class="grid">
+    <div class="stat-card">
+        <h3>{{ items_count }}</h3>
+        <p>Total Items</p>
+    </div>
+    <div class="stat-card">
+        <h3>{{ parties_count }}</h3>
+        <p>Total Parties</p>
+    </div>
+    <div class="stat-card">
+        <h3>{{ invoices_count }}</h3>
+        <p>Total Invoices</p>
+    </div>
+    <div class="stat-card">
+        <h3>₹{{ "%.2f"|format(total_sales) }}</h3>
+        <p>Total Sales</p>
+    </div>
+</div>
+
+<div class="card" style="margin-top: 1.5rem;">
+    <h2>Quick Actions</h2>
+    <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1rem;">
+        <a href="/item/add" class="btn">➕ Add Item</a>
+        <a href="/party/add" class="btn">👥 Add Party</a>
+        <a href="/invoice/create" class="btn btn-success">📄 Create Invoice</a>
+        <a href="/journal/add" class="btn">📒 Journal Entry</a>
+    </div>
+</div>
+{% endblock %}

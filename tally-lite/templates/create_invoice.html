@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card">
+    <h2>📄 Create Invoice</h2>
+    <form method="POST" id="invoiceForm">
+        <div class="grid" style="grid-template-columns: 1fr 1fr 1fr;">
+            <div class="form-group">
+                <label for="invoice_number">Invoice Number *</label>
+                <input type="text" id="invoice_number" name="invoice_number" required placeholder="INV-001">
+            </div>
+            <div class="form-group">
+                <label for="party_id">Party *</label>
+                <select id="party_id" name="party_id" required>
+                    <option value="">Select Party</option>
+                    {% for party in parties %}
+                    <option value="{{ party.id }}">{{ party.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="type">Invoice Type *</label>
+                <select id="type" name="type" required>
+                    <option value="Sales">Sales</option>
+                    <option value="Purchase">Purchase</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="date">Date *</label>
+            <input type="date" id="date" name="date" required value="{{ today }}">
+        </div>
+
+        <h3 style="margin: 1.5rem 0 1rem;">Invoice Items</h3>
+        <table id="itemsTable">
+            <thead>
+                <tr>
+                    <th style="width: 40%;">Item</th>
+                    <th style="width: 15%;">Quantity</th>
+                    <th style="width: 15%;">Rate (₹)</th>
+                    <th style="width: 15%;">Tax %</th>
+                    <th style="width: 10%;">Action</th>
+                </tr>
+            </thead>
+            <tbody id="itemsBody">
+                <tr class="item-row">
+                    <td>
+                        <select name="item_id[]" required>
+                            <option value="">Select Item</option>
+                            {% for item in items %}
+                            <option value="{{ item.id }}" data-rate="{{ item.rate }}" data-tax="{{ item.gst_rate }}">{{ item.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td><input type="number" name="quantity[]" value="1" min="1" required></td>
+                    <td><input type="number" name="rate[]" step="0.01" value="0" required></td>
+                    <td><input type="number" name="tax_rate[]" step="0.01" value="0" required></td>
+                    <td><button type="button" class="btn" onclick="removeRow(this)" style="background: #dc3545;">✕</button></td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <button type="button" class="btn" onclick="addRow()" style="margin-top: 1rem; background: #28a745;">+ Add Item Row</button>
+
+        <div style="margin-top: 2rem; padding-top: 1rem; border-top: 2px solid #ddd;">
+            <button type="submit" class="btn btn-success">💾 Save Invoice</button>
+            <a href="/invoices" class="btn" style="background: #6c757d;">Cancel</a>
+        </div>
+    </form>
+</div>
+
+<script>
+function addRow() {
+    const tbody = document.getElementById('itemsBody');
+    const row = document.createElement('tr');
+    row.className = 'item-row';
+    row.innerHTML = `
+        <td>
+            <select name="item_id[]" required>
+                <option value="">Select Item</option>
+                {% for item in items %}
+                <option value="{{ item.id }}" data-rate="{{ item.rate }}" data-tax="{{ item.gst_rate }}">{{ item.name }}</option>
+                {% endfor %}
+            </select>
+        </td>
+        <td><input type="number" name="quantity[]" value="1" min="1" required></td>
+        <td><input type="number" name="rate[]" step="0.01" value="0" required></td>
+        <td><input type="number" name="tax_rate[]" step="0.01" value="0" required></td>
+        <td><button type="button" class="btn" onclick="removeRow(this)" style="background: #dc3545;">✕</button></td>
+    `;
+    tbody.appendChild(row);
+}
+
+function removeRow(btn) {
+    const rows = document.querySelectorAll('.item-row');
+    if (rows.length > 1) {
+        btn.closest('tr').remove();
+    } else {
+        alert('At least one item is required!');
+    }
+}
+
+// Auto-fill rate and tax when item is selected
+document.addEventListener('change', function(e) {
+    if (e.target.tagName === 'SELECT' && e.target.name.startsWith('item_id[]')) {
+        const select = e.target;
+        const option = select.options[select.selectedIndex];
+        const row = select.closest('tr');
+        if (option.dataset.rate) {
+            row.querySelector('input[name="rate[]"]').value = option.dataset.rate;
+        }
+        if (option.dataset.tax) {
+            row.querySelector('input[name="tax_rate[]"]').value = option.dataset.tax;
+        }
+    }
+});
+
+// Set today's date
+document.getElementById('date').value = new Date().toISOString().split('T')[0];
+</script>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card">
+    <h2>➕ Add New Item</h2>
+    <form method="POST">
+        <div class="form-group">
+            <label for="name">Item Name *</label>
+            <input type="text" id="name" name="name" required placeholder="Enter item name">
+        </div>
+        <div class="form-group">
+            <label for="hsn_code">HSN/SAC Code</label>
+            <input type="text" id="hsn_code" name="hsn_code" placeholder="e.g., 8471">
+        </div>
+        <div class="form-group">
+            <label for="rate">Rate (₹)</label>
+            <input type="number" id="rate" name="rate" step="0.01" value="0" placeholder="0.00">
+        </div>
+        <div class="form-group">
+            <label for="gst_rate">GST Rate (%)</label>
+            <input type="number" id="gst_rate" name="gst_rate" step="0.01" value="0" placeholder="0">
+        </div>
+        <div class="form-group">
+            <label for="stock">Opening Stock</label>
+            <input type="number" id="stock" name="stock" value="0" placeholder="0">
+        </div>
+        <button type="submit" class="btn btn-success">Save Item</button>
+        <a href="/items" class="btn" style="background: #6c757d;">Cancel</a>
+    </form>
+</div>
+{% endblock %}
